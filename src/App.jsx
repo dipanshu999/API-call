@@ -2,7 +2,8 @@
 import { Link, Route, Routes } from 'react-router-dom'
 import Home from './components/Home'
 import Contact from './components/Contact'
-import About from './components/Home'
+import About from './components/About'
+import Navbar from './components/Navbar'
 
 function App() {
   
@@ -10,11 +11,7 @@ function App() {
   return(
 
     <>
-    <nav>
-      <Link to={<Home/>}>Home</Link>
-      <Link to={<About/>}>About</Link>
-      <Link to={<Contact/>}>Contact</Link>
-    </nav>
+    <Navbar/>
   
       <Routes>
         <Route path='/' element={<Home/>} />
