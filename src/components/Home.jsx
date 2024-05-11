@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import Loader from './Loader/Loader';
+import Card from './Card';
 
 
 function Home() {
@@ -17,31 +19,28 @@ function Home() {
         setProduct(products.data);
       })
       .catch(err=>console.log('Error occured: '+err))
-    }
+    } 
+
+    useEffect(()=>{
+      getData();
+    },[])
    
  return (
 
-  <div className='pl-20'>
-    Hii there 
+  <div >
 
-    <br />
-    <br />
-
-    <div className="btn">
-      <button className='bg-red-300 py-2 px-5 rounded-md' onClick={getData}>Get data</button>
-    </div>
-
-    <div>
     {  
-        product.length===0
-            ? 
-        <h1>Loading ....</h1>
-            :
-        product.map((item,index)=><li key={index} className='mt-6' ><h1 className='bg-green-300 p-2 inline'>{item.title}</h1></li>)
+      product.length===0
+      ? 
+      <Loader/>
+      : 
+
+      <div className='w-[95%] py-8 px-4 mx-auto  flex flex-wrap gap-12 justify-center'>
+        {product.map((item,index)=> <Card item={item}  key={index}/> )}
+       
+      </div>
     }
-    </div>
-
-
+    
     </div>
 
   )
