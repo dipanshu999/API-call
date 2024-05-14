@@ -10,7 +10,7 @@ function App() {
 
   return(
 
-    <>
+    <div className='max-w-[1400px] mx-auto' >
     <Navbar/>
   
       <Routes>
@@ -18,7 +18,7 @@ function App() {
         <Route path='/contact' element={<Contact/>} />
         <Route path='/about' element={<About/>} />
       </Routes>
-    </>
+    </div>
 
   )
 }

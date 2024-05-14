@@ -7,7 +7,7 @@ export default function Loader() {
       <svg viewBox="0 0 100 100">
         <defs>
           <filter id="shadow">
-            <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="#fc6767"/>
+            <feDropShadow dx="0" dy="0" stdDeviation="2.4" floodColor="#fc6767"/>
           </filter>
         </defs>
         <circle

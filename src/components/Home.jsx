@@ -3,31 +3,63 @@ import { useState } from 'react'
 import axios from 'axios'
 import Loader from './Loader/Loader';
 import Card from './Card';
+import Filter from './Filter';
 
 
 function Home() {
 
     const [product, setProduct]=useState([])
+    const [copyProduct,setCopyProduct]= useState([])
 
     let url ='https://fakestoreapi.com/products';
   
+        
+    useEffect(()=>{
+      getData();
+    },[])
+
     let getData=()=>{
   
       axios.get(url)
       .then((products)=>{
         console.log(products);
         setProduct(products.data);
+        setCopyProduct(products.data);
       })
       .catch(err=>console.log('Error occured: '+err))
     } 
 
-    useEffect(()=>{
-      getData();
-    },[])
+
+    function handleJewel(){
+      setProduct( copyProduct.filter(item=> item.category === "jewelery"));
+    }
+    function handleMen(){
+      setProduct(  copyProduct.filter(item=> item.category === "men's clothing"));
+    }
+    function handleElectric(){
+      setProduct(  copyProduct.filter(item=> item.category === "electronics"));
+    }
+    function handleWomen(){
+      setProduct(  copyProduct.filter(item=> item.category === "women's clothing"));
+    }
+    
+
+    function handleAll(){
+        axios.get(url)
+        .then((products)=>{
+          console.log(products);
+          setProduct(products.data);
+          setCopyProduct(products.data);
+        })
+        .catch(err=>console.log('Error occured: '+err))
+    }
+
    
  return (
 
-  <div >
+  <div className='mt-10'>
+
+    <Filter handleJewel={handleJewel} handleMen={handleMen} handleWomen={handleWomen} handleElectric={handleElectric} handleAll={handleAll} />
 
     {  
       product.length===0
