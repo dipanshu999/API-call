@@ -5,8 +5,7 @@ import Loader from './Loader/Loader';
 import Card from './Card';
 import Filter from './Filter';
 
-
-function Home() {
+function Home({darkMode}) {
 
     const [product, setProduct]=useState([])
     const [copyProduct,setCopyProduct]= useState([])
@@ -54,11 +53,12 @@ function Home() {
         .catch(err=>console.log('Error occured: '+err))
     }
 
-   
+    
+    
  return (
 
-  <div className='mt-10'>
-
+  <div className= {`pt-10  ${darkMode? 'bg-gray-800': 'bg-slate-50' } `}>
+    
     <Filter handleJewel={handleJewel} handleMen={handleMen} handleWomen={handleWomen} handleElectric={handleElectric} handleAll={handleAll} />
 
     {  
@@ -68,7 +68,7 @@ function Home() {
       : 
 
       <div className='w-[95%] py-8 px-4 mx-auto  flex flex-wrap gap-12 justify-center'>
-        {product.map((item,index)=> <Card item={item}  key={index}/> )}
+        {product.map((item,index)=> <Card darkMode={darkMode} item={item}  key={index}/> )}
        
       </div>
     }
