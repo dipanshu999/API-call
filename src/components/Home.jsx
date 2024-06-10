@@ -1,31 +1,35 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import Loader from './Loader/Loader';
-import Card from './Card';
 import Filter from './Filter';
+const Card=lazy(()=> import('./Card'))
 
 function Home({darkMode}) {
 
     const [product, setProduct]=useState([])
     const [copyProduct,setCopyProduct]= useState([])
+    const [loading,setLoading]= useState(true)
 
     let url ='https://fakestoreapi.com/products';
   
-        
     useEffect(()=>{
       getData();
     },[])
 
     let getData=()=>{
-  
+      setLoading(true)
       axios.get(url)
       .then((products)=>{
         console.log(products);
         setProduct(products.data);
         setCopyProduct(products.data);
+        setLoading(false)
       })
-      .catch(err=>console.log('Error occured: '+err))
+      .catch(err=>{console.log('Error occured: '+err)
+          setLoading(false)}
+          
+    )
     } 
 
 
@@ -44,33 +48,38 @@ function Home({darkMode}) {
     
 
     function handleAll(){
+        setLoading(true)
         axios.get(url)
         .then((products)=>{
           console.log(products);
           setProduct(products.data);
           setCopyProduct(products.data);
+          setLoading(false);
         })
-        .catch(err=>console.log('Error occured: '+err))
+        .catch(err=>{console.log('Error occured: '+err)
+            setLoading(false) 
+          })
+        
+        
     }
 
     
     
  return (
 
-  <div className= {`pt-10  ${darkMode? 'bg-gray-800': 'bg-slate-50' } `}>
+  <div className= {`pt-10 min-h-screen ${darkMode? 'bg-gray-800': 'bg-slate-50' } `}>
     
     <Filter handleJewel={handleJewel} handleMen={handleMen} handleWomen={handleWomen} handleElectric={handleElectric} handleAll={handleAll} />
 
-    {  
-      product.length===0
-      ? 
-      <Loader/>
-      : 
-
-      <div className='w-[95%] py-8 px-4 mx-auto  flex flex-wrap gap-12 justify-center'>
-        {product.map((item,index)=> <Card darkMode={darkMode} item={item}  key={index}/> )}
-       
-      </div>
+    {  loading? <Loader/>
+        
+        :
+     
+      <Suspense fallback={ <Loader/> } >
+          <div className='w-[95%] py-8 px-4 mx-auto  flex flex-wrap gap-12 justify-center'>
+            {product.map((item,index)=> <Card darkMode={darkMode} item={item}  key={index}/> )}
+          </div>
+      </Suspense>
     }
     
     </div>
