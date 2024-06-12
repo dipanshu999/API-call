@@ -14,7 +14,7 @@ function App() {
   }
   return(
     
-    <div className={`max-w-[1400px] mx-auto  `}  >
+    <div className={`max-w-[1400px] mx-auto `}  >
     
     <Navbar darkMode={darkMode} setMode={setMode}/>
       <Routes>

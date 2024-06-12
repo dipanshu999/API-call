@@ -10,6 +10,8 @@ function Home({darkMode}) {
     const [product, setProduct]=useState([])
     const [copyProduct,setCopyProduct]= useState([])
     const [loading,setLoading]= useState(true)
+    const [error,setError]= useState(false)
+
 
     let url ='https://fakestoreapi.com/products';
   
@@ -27,41 +29,26 @@ function Home({darkMode}) {
         setLoading(false)
       })
       .catch(err=>{console.log('Error occured: '+err)
-          setLoading(false)}
+          setLoading(false);
+          setError(true);
+        }
           
     )
     } 
 
+    const filterProducts=(category)=>{
+      category
+        ?
+        setProduct(copyProduct.filter(item=>item.category===category))
+        :
+        setProduct(copyProduct)      
+    }
 
-    function handleJewel(){
-      setProduct( copyProduct.filter(item=> item.category === "jewelery"));
-    }
-    function handleMen(){
-      setProduct(  copyProduct.filter(item=> item.category === "men's clothing"));
-    }
-    function handleElectric(){
-      setProduct(  copyProduct.filter(item=> item.category === "electronics"));
-    }
-    function handleWomen(){
-      setProduct(  copyProduct.filter(item=> item.category === "women's clothing"));
-    }
-    
-
-    function handleAll(){
-        setLoading(true)
-        axios.get(url)
-        .then((products)=>{
-          console.log(products);
-          setProduct(products.data);
-          setCopyProduct(products.data);
-          setLoading(false);
-        })
-        .catch(err=>{console.log('Error occured: '+err)
-            setLoading(false) 
-          })
-        
-        
-    }
+    const handleJewel = () => filterProducts("jewelery");
+    const handleMen = () => filterProducts("men's clothing");
+    const handleElectric = () => filterProducts("electronics");
+    const handleWomen = () => filterProducts("women's clothing");
+    const handleAll = () => filterProducts(null);
 
     
     
@@ -74,7 +61,10 @@ function Home({darkMode}) {
     {  loading? <Loader/>
         
         :
-     
+     error
+        ?
+     <div className='text-5xl text-center mt-40 text-red-600' >!! Something went wrong</div>
+        :
       <Suspense fallback={ <Loader/> } >
           <div className='w-[95%] py-8 px-4 mx-auto  flex flex-wrap gap-12 justify-center'>
             {product.map((item,index)=> <Card darkMode={darkMode} item={item}  key={index}/> )}
